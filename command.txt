@@ -1,0 +1,22 @@
+
+# Evaluation Only
+python train_net.py --eval-only --num-gpus 1 --config-file configs/moba_R50_ChangE.yaml MODEL.WEIGHTS output/model_best.pth OUTPUT_DIR output_vis
+python train_net.py --eval-only --num-gpus 1 --config-file configs/moba_R50_LU.yaml MODEL.WEIGHTS output/model_best.pth OUTPUT_DIR output_vis
+python train_net.py --eval-only --num-gpus 1 --config-file configs/moba_R50_L4.yaml MODEL.WEIGHTS output/model_best.pth OUTPUT_DIR output_vis
+
+
+# Training
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_ChangE.yaml
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_LU.yaml
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_L4.yaml
+
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_ChangE.yaml MODEL.WEIGHTS output/model_best.pth 
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_LU.yaml MODEL.WEIGHTS output/model_best.pth 
+python train_net.py --num-gpus 1 --config-file configs/moba_R50_L4.yaml MODEL.WEIGHTS output/model_best.pth 
+
+# Predict
+python predict.py
+
+
+
+
