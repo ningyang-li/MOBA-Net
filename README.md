@@ -94,7 +94,7 @@ DATASET = 'ChangE'   # ChangE | LU | LRO-L4
 
 ## 🏋️ Training
 
-Download the ImageNet-pretrained ResNet-50 weights (configured via `detectron2://ImageNetPretrained/torchvision/R-50.pkl`, fetched automatically), then run (our training card is NVIDIA RTX 5880 Ada Generation 96GB):
+Download the ImageNet-pretrained ResNet-50 weights (configured via `detectron2://ImageNetPretrained/torchvision/R-50.pkl`, fetched automatically), then run (our training card is NVIDIA RTX 5880 Ada Generation 48GB):
 
 ```bash
 # ChangE
