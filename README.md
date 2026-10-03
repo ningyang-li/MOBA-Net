@@ -134,7 +134,7 @@ Results are written to `vis/`, including `*_pred_instance_no_text.png`, `*_pred_
 
 ## 🙏 Acknowledgements
 
-This project is built upon [MaskDINO](https://github.com/IDEA-Research/MaskDINO), [Detectron2](https://github.com/facebookresearch/detectron2), and the Boltzmann attention sampling of [BoltzFormer](https://github.com/IDEA-Research/BoltzFormer). We thank the authors for their excellent work. This work was supported by the National Key Research and Development Program of China under Grant 2023YFB3906102.
+This project is built upon [MaskDINO](https://github.com/IDEA-Research/MaskDINO), [Detectron2](https://github.com/facebookresearch/detectron2), and the Boltzmann attention sampling of [BoltzFormer](https://aka.ms/boltzformer). We thank the authors for their excellent work. This work was supported by the National Key Research and Development Program of China under Grant 2023YFB3906102.
 
 ## ⚖️ License
 
