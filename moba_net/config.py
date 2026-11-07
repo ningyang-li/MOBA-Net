@@ -7,6 +7,8 @@ def add_decoder_config(cfg):
     Add config for DECODER.
     """
     # NOTE: configs from original mask2former
+    # global random seed for reproducibility (random / numpy / torch)
+    cfg.SEED = 42
     # data config
     # select the dataset mapper
     cfg.INPUT.DATASET_MAPPER_NAME = "coco_instance_lsj"
