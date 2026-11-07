@@ -23,6 +23,8 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, build_detection_train_loader
 
+from detectron2.utils.env import seed_all_rng
+
 from detectron2.evaluation import (
     CityscapesInstanceEvaluator,
     CityscapesSemSegEvaluator,
@@ -96,6 +98,23 @@ MetadataCatalog.get("train2017").set(
 MetadataCatalog.get("val2017").set(
     thing_classes=_thing_classes,
     sem_seg_root=os.path.join("datasets/", DATASET, "annotations/sem/val2017"),
+    stuff_classes=_stuff_classes,      # for semantic segmentation
+    evaluator_type="coco",
+    ignore_label=255   # standard default
+)
+
+DatasetCatalog.register(
+    "test2017",
+    lambda: load_coco_with_semantic(
+        os.path.join("datasets/", DATASET, "annotations/instances_sem_test2017.json"),
+        os.path.join("datasets/", DATASET, "test2017"),
+        os.path.join("datasets/", DATASET, "annotations/sem/test2017")
+    )
+)
+
+MetadataCatalog.get("test2017").set(
+    thing_classes=_thing_classes,
+    sem_seg_root=os.path.join("datasets/", DATASET, "annotations/sem/test2017"),
     stuff_classes=_stuff_classes,      # for semantic segmentation
     evaluator_type="coco",
     ignore_label=255   # standard default
@@ -536,6 +555,8 @@ def setup(args):
 
 def main(args):
     cfg = setup(args)
+    # set global random seed (random / numpy / torch) from cfg.SEED
+    seed_all_rng(cfg.SEED)
     print("Command cfg:", cfg)
     if args.eval_only:
         model = Trainer.build_model(cfg)
