@@ -69,20 +69,23 @@ cd ../../../../
 ## 📦 Datasets and Preparation
 
 MOBA-Net is evaluated on three public lunar landform datasets: ChangE, LU, and LRO-L4.
-Organize each dataset in COCO format under `datasets/` (the semantic ground truth used by the evaluator is stored in `annotations/sem/`):
+Organize each dataset in COCO format under `datasets/` with three splits (`train2017`, `val2017`, and `test2017`; the semantic ground truth used by the evaluator is stored in `annotations/sem/`):
 
 ```
 MOBA-Net/
 └── datasets/
     └── <DATASET>/                  # ChangE | LU | LRO-L4
         ├── train2017/              # training DOM images (.png)
-        ├── val2017/                # testing DOM images (.png)
+        ├── val2017/                # validation DOM images (.png)
+        ├── test2017/               # testing DOM images (.png)
         └── annotations/
             ├── instances_sem_train2017.json   # COCO instance annotations
             ├── instances_sem_val2017.json
+            ├── instances_sem_test2017.json
             └── sem/
                 ├── train2017/      # semantic segmentation ground truth
-                └── val2017/
+                ├── val2017/
+                └── test2017/
 ```
 
 The dataset is registered automatically by [`train_net.py`](train_net.py). Select the dataset to train/evaluate with the `DATASET` variable at the top of the script:
@@ -91,6 +94,22 @@ The dataset is registered automatically by [`train_net.py`](train_net.py). Selec
 # train_net.py
 DATASET = 'ChangE'   # ChangE | LU | LRO-L4
 ```
+
+## 🔀 Data Split and Evaluation Protocol
+
+Following the protocol in our paper, the original training set of each dataset is split into a training set and a validation set at a ratio of about 9:1, and the test set is kept untouched:
+
+| Dataset | Train | Validation | Test |
+| :--- | :---: | :---: | :---: |
+| ChangE | 595 | 66 | 197 |
+| LU | 7416 | 824 | 1031 |
+| LRO-L4 | 1168 | 132 | 380 |
+
+**Split protocol.** Parameter-setting and ablation experiments are trained on the training set and evaluated on the validation set. The final model and all compared methods are trained on the combination of the training and validation sets and evaluated on the test set. The split manifests are defined by the image lists in the three annotation files of each dataset (`instances_sem_train2017.json`, `instances_sem_val2017.json`, and `instances_sem_test2017.json`).
+
+**Random seeds.** All experiments are repeated five times under five fixed seeds (42, 43, 44, 45, and 46) shared by all methods, and the average results and standard deviations of the five runs are reported. The only source of randomness across the five runs is the Xavier initialization of the network parameters, which varies with the random seed; the data ordering, optimizer settings, and data split are kept fixed.
+
+**Best-checkpoint selection.** The best checkpoint (`model_best.pth`) is selected based on the highest instance-segmentation AP50 (Ins-AP50) on the validation set.
 
 ## 🏋️ Training
 
@@ -113,6 +132,10 @@ To resume training or fine-tune from a checkpoint:
 python train_net.py --num-gpus 1 --config-file configs/moba_R50_ChangE.yaml \
     MODEL.WEIGHTS output/model_best.pth
 ```
+
+## ⬇️ Pretrained Weights
+
+The pretrained MOBA-Net weights for the three datasets (the final models trained on the combination of the training and validation sets; see the protocol above) can be downloaded via [Google Drive](https://drive.google.com/drive/folders/1mITcosw3MzLahxabi6Dt1UfM-alA0BOD). Place the downloaded checkpoint under `output/` (e.g. `output/model_best.pth`), and run the evaluation or visualization scripts below.
 
 ## 📈 Evaluation
 
@@ -139,3 +162,7 @@ This project is built upon [MaskDINO](https://github.com/IDEA-Research/MaskDINO)
 ## ⚖️ License
 
 This repository is released under the [Apache 2.0 license](LICENSE), following its MaskDINO and Detectron2 lineage.
+
+## 💬 Discussion
+
+Feedback and discussions are warmly welcome! 👋 If you have any questions ❓, suggestions, or ideas 💡 about this project. We are always glad to exchange ideas 😊 and will respond as soon as possible 🚀.
